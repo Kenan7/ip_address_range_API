@@ -68,7 +68,7 @@ def get_all(ip: str):
             wb = open_workbook(file_location)
             sheet = wb.sheet_by_index(0)
     # if in any way it throws indexerror that's because it can't read the 'converted' string which is not there
-    # this is extra step but xlrd API does not return anything about cell is empty or does not exists
+    # this is extra step that is because xlrd API does not return anything about cell is empty or does not exists
     # it's basically raises IndexError if there is not a cell
     except IndexError:
         convert_tabs_to_spaces()
