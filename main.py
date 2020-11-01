@@ -1,21 +1,20 @@
-from fastapi.middleware.cors import CORSMiddleware
+import csv
+from typing import Any, Dict
+
 from fastapi import FastAPI, Form
-from typing import Dict, Any
+from fastapi.middleware.cors import CORSMiddleware
+from openpyxl import Workbook, load_workbook
 from xlrd import open_workbook
 from xlutils.copy import copy
-from openpyxl import Workbook, load_workbook
-
 
 app = FastAPI()
 
 # origins = [
-#     "http://localhost.tiangolo.com",
-#     "https://localhost.tiangolo.com",
 #     "http://localhost",
 #     "http://localhost:4200",
 # ]
 
-file_location = "assets/Section_4.xlsx"
+file_location = "assets/Section_4.csv"
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,6 +23,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # seperate IP address by dots
 def tear_ip(ip: str):
@@ -128,3 +128,49 @@ def new_entry(request: Dict[Any, Any]):
     # write the new value to last row
     write.get_sheet(0).write(sheet.nrows, 0, new_value)
     write.save(file_location)
+
+
+@app.get("/csv/get/{ip}")
+def get_all_csv(ip: str):
+
+    # initalize emtpy array for storing ranges
+    ip_ranges_list = []
+
+    teared_up_input = tear_ip(ip)
+
+    with open(file_location, "r") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
+
+        next(csv_reader)
+
+        for ip_range in csv_reader:
+
+            splitted_by_space = str(ip_range[0]).split(" ")
+            teared_up_start = tear_ip(ip=splitted_by_space[0])
+            teared_up_last = tear_ip(ip=splitted_by_space[1])
+
+            if (
+                teared_up_start["1st_part_of_ip"]
+                <= teared_up_input["1st_part_of_ip"]
+                <= teared_up_last["1st_part_of_ip"]
+            ):
+
+                if (
+                    teared_up_start["2nd_part_of_ip"]
+                    <= teared_up_input["2nd_part_of_ip"]
+                    <= teared_up_last["2nd_part_of_ip"]
+                ):
+                    if (
+                        teared_up_start["3rd_part_of_ip"]
+                        <= teared_up_input["3rd_part_of_ip"]
+                        <= teared_up_last["3rd_part_of_ip"]
+                    ):
+                        if (
+                            teared_up_start["4th_part_of_ip"]
+                            <= teared_up_input["4th_part_of_ip"]
+                            <= teared_up_last["4th_part_of_ip"]
+                        ):
+
+                            ip_ranges_list.append(ip_range[0])
+
+    return ip_ranges_list
