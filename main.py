@@ -7,11 +7,6 @@ from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-# origins = [
-#     "http://localhost",
-#     "http://localhost:4200",
-# ]
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -42,7 +37,7 @@ def check_collisions(ip: str):
         return True
 
 
-file_location = "assets/New.csv"
+file_location = "assets/Section_4.csv"
 
 
 @app.post("/add")
