@@ -110,3 +110,8 @@ def get_item(ip: str):
 
     # return the matched addresses
     return ip_ranges_list
+
+
+@app.get("/")
+def home():
+    return "API works"

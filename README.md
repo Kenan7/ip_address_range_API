@@ -1,6 +1,8 @@
 # ip_address_range_API
 
-## for starting the web server
+## for starting the web server locally
+
+make sure you have python and pip installed
 
 ```
 pip install virtualenv
