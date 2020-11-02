@@ -1,0 +1,17 @@
+version: '3'
+services:
+  nginx:
+    build: ./nginx/
+    container_name: nginx 
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - fastapiapp:fastapi
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+  fastapiapp:
+    build: ./
+    container_name: fastapi
+    expose:
+      - "8080"

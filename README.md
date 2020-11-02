@@ -17,3 +17,5 @@ python run_this_first.py
 
 uvicorn main:app --reload
 ```
+
+## even though docker-compose and dockerfile is provided, it will not work because of letsencrypt ssl certificate keys
