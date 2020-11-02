@@ -3,8 +3,6 @@
 ## for starting the web server
 
 ```
-create virtual environment
-
 pip install virtualenv
 
 python3 -m virtualenv env
